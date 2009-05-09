@@ -1,13 +1,17 @@
-all: test
-.PHONY: all deps test clean clobber
+all: recompute_deps test
+.PHONY: all recompute_deps test clean clobber
+
+recompute_deps:
+	rm -rf deps
 
 deps: src/find_deps.rb
 	$< > $@
 
 include deps
 
-test: $(patsubst src/%.hs,crumbs/%.agda,$(shell find src -name '*.hs'))
-	cd crumbs; agda `find -name '*.agda'`
+test: crumbs/Main.agda
+	cd crumbs; agda --include-path=. --include-path=$(HOME)/lib/agda \
+	  Main.agda
 	-@echo '*** ALL TESTS OK ***'
 
 clean:
