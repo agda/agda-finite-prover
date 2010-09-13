@@ -7,6 +7,7 @@ open import Data.Nat hiding (_≟_)
 open import Data.Fin
 open import Data.Fin.Dec
 open import Data.Fin.Props hiding (to-from)
+open import Data.Vec.Auto
 open import Data.Product
 open import Relation.Nullary
 open import Relation.Nullary.Auto
