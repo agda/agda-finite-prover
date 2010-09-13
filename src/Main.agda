@@ -7,10 +7,12 @@ open import Data.Nat hiding (_≟_)
 open import Data.Fin
 open import Data.Fin.Dec
 open import Data.Fin.Props hiding (to-from)
+open import Data.Vec
 open import Data.Vec.Auto
 open import Data.Product
 open import Relation.Nullary
 open import Relation.Nullary.Auto
+open import Relation.Binary.Cardinality
 open import Relation.Binary.PropositionalEquality
 import Algebra.FunctionProperties as P
 open P _≡_
@@ -54,38 +56,27 @@ Z ⋅ Z = I
 +-comm Z Y = refl
 +-comm Z Z = refl
 
-LoopsBack : ∀ {A B} → (A → B) → (B → A) → Set
-LoopsBack f g = ∀ x → f (g x) ≡ x
-
-Bijection : ∀ {A B} → (A → B) → (B → A) → Set
-Bijection f g = LoopsBack f g × LoopsBack g f
-
-record SameCardinality (A B : Set) : Set where
-  field
-    into : A → B
-    from : B → A
-    bij : Bijection into from
-
-Finite : Set → Set
-Finite A = ∃ λ n → SameCardinality A (Fin n)
-
 finitePauli : Finite Pauli
 finitePauli = 4 , record { into = toFin
                          ; from = fromFin
                          ; bij = to-from , from-to
                          } where
+  xs : Vec Pauli 4
+  xs = I ∷ X ∷ Y ∷ Z ∷ []
+  
+  info : ∀ x
+       → ∃ λ i
+       → lookup i xs ≡ x
+  info I = # 0 , refl
+  info X = # 1 , refl
+  info Y = # 2 , refl
+  info Z = # 3 , refl
+  
   toFin : Pauli → Fin 4
-  toFin I = # 0
-  toFin X = # 1
-  toFin Y = # 2
-  toFin Z = # 3
+  toFin x = proj₁ (info x)
   
   fromFin : Fin 4 → Pauli
-  fromFin zero = I
-  fromFin (suc zero) = X
-  fromFin (suc (suc zero)) = Y
-  fromFin (suc (suc (suc zero))) = Z
-  fromFin (suc (suc (suc (suc ()))))
+  fromFin i = lookup i xs
   
   to-from : ∀ x → toFin (fromFin x) ≡ x
   to-from = fromT (all? λ x
@@ -93,10 +84,7 @@ finitePauli = 4 , record { into = toFin
             ) _
   
   from-to : ∀ x → fromFin (toFin x) ≡ x
-  from-to I = refl
-  from-to X = refl
-  from-to Y = refl
-  from-to Z = refl
+  from-to x = proj₂ (info x)
   
   ⋅-comm : Commutative _⋅_
   ⋅-comm x y = thus x y (almost (toFin x) (toFin y)) where
