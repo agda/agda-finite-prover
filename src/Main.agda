@@ -57,23 +57,17 @@ Z ⋅ Z = I
 +-comm Z Z = refl
 
 finitePauli : Finite Pauli
-finitePauli = 4 , record { into = toFin
-                         ; from = fromFin
-                         ; bij = to-from , from-to
-                         } where
-  xs : Vec Pauli 4
+finitePauli = finite xs w refl where
   xs = I ∷ X ∷ Y ∷ Z ∷ []
   
-  info : ∀ x
-       → ∃ λ i
-       → lookup i xs ≡ x
-  info I = # 0 , refl
-  info X = # 1 , refl
-  info Y = # 2 , refl
-  info Z = # 3 , refl
+  w : FiniteWitness xs
+  w I = # 0 , refl
+  w X = # 1 , refl
+  w Y = # 2 , refl
+  w Z = # 3 , refl
   
   toFin : Pauli → Fin 4
-  toFin x = proj₁ (info x)
+  toFin x = proj₁ (w x)
   
   fromFin : Fin 4 → Pauli
   fromFin i = lookup i xs
@@ -84,7 +78,7 @@ finitePauli = 4 , record { into = toFin
             ) _
   
   from-to : ∀ x → fromFin (toFin x) ≡ x
-  from-to x = proj₂ (info x)
+  from-to x = proj₂ (w x)
   
   ⋅-comm : Commutative _⋅_
   ⋅-comm x y = thus x y (almost (toFin x) (toFin y)) where
