@@ -8,11 +8,11 @@ open import Data.Fin
 open import Data.Fin.Dec
 open import Data.Fin.Props hiding (to-from)
 open import Data.Vec
-open import Data.Vec.Auto
 open import Data.Product
 open import Relation.Nullary
 open import Relation.Nullary.Auto
 open import Relation.Binary.Cardinality
+open import Relation.Binary.Cardinality.Auto
 open import Relation.Binary.PropositionalEquality
 import Algebra.FunctionProperties as P
 open P _≡_
