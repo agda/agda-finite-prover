@@ -9,20 +9,12 @@ open import Data.Fin.Dec
 open import Data.Fin.Props hiding (to-from)
 open import Data.Product
 open import Relation.Nullary
+open import Relation.Nullary.Auto
 open import Relation.Binary.PropositionalEquality
 import Algebra.FunctionProperties as P
 open P _≡_
 open ≡-Reasoning
 
-
-toT : {P : Set} → Dec P → Set
-toT (yes _) = ⊤
-toT (no _) = ⊥
-
-fromT : ∀ {P} dP → toT {P} dP → P
-fromT {P} (yes p) _ = p
-fromT {P} (no _) ()
-    
 
 data Pauli : Set where
   I : Pauli
