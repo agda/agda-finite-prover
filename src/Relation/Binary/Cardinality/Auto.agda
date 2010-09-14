@@ -6,10 +6,10 @@ open import Level
 open import Data.Nat hiding (_≟_)
 open import Data.Fin
 open import Data.Fin.Dec
-open import Data.Fin.Props hiding (to-from)
 open import Data.Vec
 open import Data.Vec.Auto
 open import Data.Product
+open import Data.Function.LeftInverse
 open import Relation.Nullary
 open import Relation.Nullary.Auto
 open import Relation.Binary.Cardinality
@@ -65,5 +65,16 @@ module Args {n a} {A : Set a}
   finite : Cancels₁
          → Finite A
   finite eq = n , finiteCardinality eq
-
+  
 open Args public
+
+
+leftInverse : ∀ {a b} {A : Set a} {B : Set b}
+            → SameCardinality A B
+            → LeftInverse (setoid A) (setoid B)
+leftInverse car = record
+                { to           = →-to-⟶ into
+                ; from         = →-to-⟶ from
+                ; left-inverse = proj₂ bij
+                } where
+  open SameCardinality car
