@@ -1,22 +1,18 @@
 module Main where
 
-open import Data.Empty
-open import Data.Unit hiding (_≟_)
-open import Data.Bool hiding (_≟_)
-open import Data.Nat hiding (_≟_)
+open import Data.Nat hiding (_≟_; eq?)
 open import Data.Fin
-open import Data.Fin.Dec
-open import Data.Fin.Props hiding (to-from)
 open import Data.Vec
 open import Data.Product
+open import Data.Function
+open import Data.Function.LeftInverse using (LeftInverse)
 open import Relation.Nullary
-open import Relation.Nullary.Auto
 open import Relation.Binary.Cardinality
 open import Relation.Binary.Cardinality.Auto
 open import Relation.Binary.PropositionalEquality
-import Algebra.FunctionProperties as P
-open P _≡_
-open ≡-Reasoning
+import Algebra.FunctionProperties
+
+open import Crosswhite
 
 
 data Pauli : Set where
@@ -26,8 +22,6 @@ data Pauli : Set where
   Z : Pauli
 
 _⋅_ : Pauli → Pauli → Pauli
-_ ⋅ I = I
-I ⋅ _ = I
 X ⋅ X = I
 X ⋅ Y = Z
 X ⋅ Z = Y
@@ -37,24 +31,8 @@ Y ⋅ Z = X
 Z ⋅ X = Y
 Z ⋅ Y = X
 Z ⋅ Z = I
-
-+-comm : Commutative _⋅_
-+-comm I I = refl
-+-comm I X = refl
-+-comm I Y = refl
-+-comm I Z = refl
-+-comm X I = refl
-+-comm X X = refl
-+-comm X Y = refl
-+-comm X Z = refl
-+-comm Y I = refl
-+-comm Y X = refl
-+-comm Y Y = refl
-+-comm Y Z = refl
-+-comm Z I = refl
-+-comm Z X = refl
-+-comm Z Y = refl
-+-comm Z Z = refl
+a ⋅ I = a
+I ⋅ a = a
 
 finitePauli : Finite Pauli
 finitePauli = finite xs w refl where
@@ -65,59 +43,29 @@ finitePauli = finite xs w refl where
   w X = # 1 , refl
   w Y = # 2 , refl
   w Z = # 3 , refl
-  
-  toFin : Pauli → Fin 4
-  toFin x = proj₁ (w x)
-  
-  fromFin : Fin 4 → Pauli
-  fromFin i = lookup i xs
-  
-  to-from : ∀ x → toFin (fromFin x) ≡ x
-  to-from = fromT (all? λ x
-          → toFin (fromFin x) ≟ x
-            ) _
-  
-  from-to : ∀ x → fromFin (toFin x) ≡ x
-  from-to x = proj₂ (w x)
-  
-  ⋅-comm : Commutative _⋅_
-  ⋅-comm x y = thus x y (almost (toFin x) (toFin y)) where
-    _∙_ : Fin 4 → Fin 4 → Fin 4
-    x ∙ y = toFin (fromFin x ⋅ fromFin y)
-    
-    and-similarly : ∀ x y
-                  → x ⋅ y ≡ fromFin (toFin x ∙ toFin y)
-    and-similarly x y =
-      begin
-        x ⋅ y
-      ≡⟨ cong₂ _⋅_ (sym (from-to x)) (sym (from-to y)) ⟩
-        fromFin (toFin x) ⋅ fromFin (toFin y)
-      ≡⟨ sym (from-to _) ⟩
-        fromFin (toFin (fromFin (toFin x) ⋅ fromFin (toFin y)))
-      ≡⟨ refl ⟩
-        fromFin (toFin x ∙ toFin y)
-      ∎
-    
-    P : Fin 4 → Fin 4 → Set
-    P x y = x ∙ y ≡ y ∙ x
-    
-    Q : Pauli → Pauli → Set
-    Q x y = x ⋅ y ≡ y ⋅ x
-    
-    thus : ∀ x y → P (toFin x) (toFin y) → Q x y
-    thus x y p =
-      begin
-        x ⋅ y
-      ≡⟨ and-similarly x y ⟩
-        fromFin (toFin x ∙ toFin y)
-      ≡⟨ cong fromFin p ⟩
-        fromFin (toFin y ∙ toFin x)
-      ≡⟨ sym (and-similarly y x) ⟩
-        y ⋅ x
-      ∎
-    
-    almost : ∀ x y → P x y
-    almost = fromT (all? λ x
-           → (all? λ y
-           → x ∙ y ≟ y ∙ x
-             )) _
+
+pauli4 : SameCardinality Pauli (Fin 4)
+pauli4 = proj₂ finitePauli
+
+leftPauli : LeftInverse (setoid Pauli) (setoid (Fin 4))
+leftPauli = leftInverse pauli4
+
+fromYes : ∀ {P} {p} (x : Dec P) → x ≡ yes p → P
+fromYes {P} {p} .(yes p) refl = p
+
+open Decision leftPauli using (decide; decide₂; decide₃)
+open Algebra.FunctionProperties {A = Pauli} _≡_
+
+⋅-identity : Identity I _⋅_
+⋅-identity = fromYes (decide (_⋅_ I) id) refl
+           , fromYes (decide (flip _⋅_ I) id) refl
+
+⋅-commutative : Commutative _⋅_
+⋅-commutative = fromYes (decide₂ (_⋅_) (flip _⋅_)) refl
+
+⋅-inverse : Inverse I id _⋅_
+⋅-inverse = fromYes (decide (λ x → x ⋅ x) (const I)) refl , fromYes (decide (λ x → x ⋅ x) (const I)) refl
+
+-- causes a "memory allocation failed (requested 2097152 bytes)" error
+--   ⋅-associative : Associative _⋅_
+--   ⋅-associative = fromYes (decide₃ (λ x y z → (x ⋅ y) ⋅ z) (λ x y z → x ⋅ (y ⋅ z))) refl
