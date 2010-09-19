@@ -38,10 +38,11 @@ toVec : ∀ {ℓ n} {A : Set ℓ}
       → Vec A n
 toVec {ℓ} {n} f = map f (allFin n)
 
-lookup-toVec : ∀ {ℓ n x} {A : Set ℓ}
+lookup-toVec : ∀ {ℓ n} {A : Set ℓ}
              → (f : Fin n → A)
+             → (x : Fin n)
              → lookup x (toVec f) ≡ f x
-lookup-toVec {ℓ} {n} {x} f =
+lookup-toVec {n = n} f x =
   begin
     lookup x (map f (allFin n))
   ≡⟨ lookup-free f x ⟩
@@ -58,10 +59,10 @@ zip-eq : ∀ {ℓ n} {A : Set ℓ}
 zip-eq P Q eq x =
   begin
     P x
-  ≡⟨ sym (lookup-toVec P) ⟩
+  ≡⟨ sym (lookup-toVec P x) ⟩
     lookup x (toVec P)
   ≡⟨ cong (lookup x) eq ⟩
     lookup x (toVec Q)
-  ≡⟨ lookup-toVec Q ⟩
+  ≡⟨ lookup-toVec Q x ⟩
     Q x
   ∎
