@@ -2,6 +2,7 @@ module Main where
 
 open import Data.Nat hiding (_≟_; eq?)
 open import Data.Fin
+open import Data.Fin.Auto
 open import Data.Fin.Cardinality
 open import Data.Vec
 open import Data.Matrix hiding (lookup)
