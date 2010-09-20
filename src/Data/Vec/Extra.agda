@@ -6,6 +6,7 @@ open import Level
 open import Data.Nat
 open import Data.Fin
 open import Data.Vec
+open import Data.Function
 open import Relation.Binary.PropositionalEquality
 
 open ≡-Reasoning
@@ -32,4 +33,18 @@ lookup-allFin {suc n} (suc x) =
     suc x
   ∎
 
-
+map-∘ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}
+      → (f : B → C)
+      → (g : A → B)
+      → ∀ {n}
+      → (xs : Vec A n)
+      → map f (map g xs)
+      ≡ map (f ∘ g) xs
+map-∘ f g []       = refl
+map-∘ f g (x ∷ xs) =
+  begin
+    f (g x) ∷ map f (map g xs)
+  ≡⟨ cong (λ – → f (g x) ∷ –)
+          (map-∘ f g xs) ⟩
+    (f ∘ g) x ∷ map (f ∘ g) xs
+  ∎
