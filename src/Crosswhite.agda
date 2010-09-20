@@ -1,23 +1,8 @@
 module Crosswhite where
 
-open import Data.Empty
-open import Data.Unit hiding (_≟_)
-open import Data.Bool hiding (_≟_)
-open import Data.Nat hiding (_≟_; eq?)
-open import Data.Fin
-open import Data.Fin.Dec
-open import Data.Vec
-open import Data.Product
 open import Data.Function using (_∘_)
 open import Data.Function.LeftInverse hiding (_∘_)
 open import Relation.Nullary
-open import Relation.Nullary.Auto
-open import Relation.Binary.Cardinality
-open import Relation.Binary.Cardinality.Auto
-import Relation.Binary.PropositionalEquality as P
--- import Algebra.FunctionProperties as P
--- open P _≡_
-
 
   
 ------------------------------------------------------------------------
