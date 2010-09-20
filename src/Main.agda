@@ -2,13 +2,15 @@ module Main where
 
 open import Data.Nat hiding (_≟_; eq?)
 open import Data.Fin
+open import Data.Fin.Cardinality
 open import Data.Vec
+open import Data.Matrix hiding (lookup)
+open import Data.Matrix.Auto
 open import Data.Product
 open import Data.Function
 open import Data.Function.LeftInverse using (LeftInverse)
 open import Relation.Nullary
 open import Relation.Binary.Cardinality
-open import Relation.Binary.Cardinality.Auto
 open import Relation.Binary.PropositionalEquality
 import Algebra.FunctionProperties
 
@@ -50,21 +52,15 @@ pauli4 = proj₂ finitePauli
 leftPauli : LeftInverse (setoid Pauli) (setoid (Fin 4))
 leftPauli = leftInverse pauli4
 
-fromYes : ∀ {P} {p} (x : Dec P) → x ≡ yes p → P
-fromYes {P} {p} .(yes p) refl = p
-
-open Decision leftPauli using (decide; decide₂; decide₃)
-open Algebra.FunctionProperties {A = Pauli} _≡_
-
-⋅-identity : Identity I _⋅_
-⋅-identity = fromYes (decide (_⋅_ I) id) refl
-           , fromYes (decide (flip _⋅_ I) id) refl
-
-⋅-commutative : Commutative _⋅_
-⋅-commutative = fromYes (decide₂ (_⋅_) (flip _⋅_)) refl
-
-⋅-inverse : Inverse I id _⋅_
-⋅-inverse = fromYes (decide (λ x → x ⋅ x) (const I)) refl , fromYes (decide (λ x → x ⋅ x) (const I)) refl
+-- ⋅-identity : Identity I _⋅_
+-- ⋅-identity = fromYes (decide (_⋅_ I) id) refl
+--            , fromYes (decide (flip _⋅_ I) id) refl
+-- 
+-- ⋅-commutative : Commutative _⋅_
+-- ⋅-commutative = fromYes (decide₂ (_⋅_) (flip _⋅_)) refl
+-- 
+-- ⋅-inverse : Inverse I id _⋅_
+-- ⋅-inverse = fromYes (decide (λ x → x ⋅ x) (const I)) refl , fromYes (decide (λ x → x ⋅ x) (const I)) refl
 
 -- causes a "memory allocation failed (requested 2097152 bytes)" error
 --   ⋅-associative : Associative _⋅_
