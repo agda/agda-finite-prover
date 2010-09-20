@@ -6,7 +6,7 @@ open import Level
 open import Data.Nat
 open import Data.Fin
 open import Data.Vec
-open import Data.Vec.Extra
+open import Data.Vec.Theorems
 open import Relation.Binary.PropositionalEquality
 
 open ≡-Reasoning

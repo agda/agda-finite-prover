@@ -1,6 +1,6 @@
 {-# OPTIONS --universe-polymorphism #-}
 
-module Data.Vec.Extra where
+module Data.Vec.Theorems where
 
 open import Level
 open import Data.Nat
@@ -19,7 +19,6 @@ lookup-free : ∀ {a b} {A : Set a} {B : Set b} (f : A → B)
 lookup-free f zero    {x ∷ xs} = refl
 lookup-free f (suc i) {x ∷ xs} = lookup-free f i {xs}
 
-
 lookup-allFin : ∀ {n} x
               → lookup x (allFin n) ≡ x
 lookup-allFin {zero}  ()
@@ -32,6 +31,7 @@ lookup-allFin {suc n} (suc x) =
   ≡⟨ cong suc (lookup-allFin x) ⟩
     suc x
   ∎
+
 
 map-∘ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}
       → (f : B → C)
@@ -47,4 +47,20 @@ map-∘ f g (x ∷ xs) =
   ≡⟨ cong (λ – → f (g x) ∷ –)
           (map-∘ f g xs) ⟩
     (f ∘ g) x ∷ map (f ∘ g) xs
+  ∎
+
+map-id : ∀ {a} {A : Set a}
+       → {f : A → A}
+       → (∀ x → f x ≡ x)
+       → ∀ {n}
+       → (xs : Vec A n)
+       → map f xs ≡ xs
+map-id {f = f} fx≡x []       = refl
+map-id {f = f} fx≡x (x ∷ xs) =
+  begin
+    f x ∷ map f xs
+  ≡⟨ cong₂ _∷_
+           (fx≡x x)
+           (map-id fx≡x xs) ⟩
+    x ∷ xs
   ∎
