@@ -1,21 +1,14 @@
 {-# OPTIONS --universe-polymorphism #-}
 
-module Relation.Binary.Cardinality.Auto where
+module Data.Fin.Cardinality where
 
 open import Level
-open import Data.Nat hiding (_≟_)
 open import Data.Fin
-open import Data.Fin.Dec
-open import Data.Vec
+open import Data.Vec hiding (replicate) renaming (lookup to vec-lookup)
 open import Data.Vec.Auto
-open import Data.Product
-open import Data.Function.LeftInverse
-open import Relation.Nullary
-open import Relation.Nullary.Auto
+open import Data.Product hiding (map)
 open import Relation.Binary.Cardinality
 open import Relation.Binary.PropositionalEquality
-
-open ≡-Reasoning
 
 
 private
@@ -25,17 +18,17 @@ private
                   → Set ℓ
     FiniteWitness xs = ∀ x
                      → ∃ λ i
-                     → lookup i xs ≡ x
-    
-    module Finite {n} (xs : Vec A n)
-                  (w : FiniteWitness xs)
+                     → vec-lookup i xs ≡ x
+
+    module WithWitness {n} (xs : Vec A n)
+                       (w : FiniteWitness xs)
          where
       private
         into : A → Fin n
         into x = proj₁ (w x)
         
         from : Fin n → A
-        from i = lookup i xs
+        from i = vec-lookup i xs
         
         P : Fin n → Fin n
         P i = into (from i)
@@ -60,24 +53,12 @@ private
                            ; from = from
                            ; bij = to-from , lookupWitness
                            } where
-        to-from : ∀ i → into (lookup i xs) ≡ i
+        to-from : ∀ i → into (vec-lookup i xs) ≡ i
         to-from = zip-eq P Q eq
       
       finite : Cancels₁
              → Finite A
       finite eq = n , finiteCardinality eq
     
-    open Finite public
-    
-    
-    leftInverse : ∀ {b} {B : Set b}
-                → SameCardinality A B
-                → LeftInverse (setoid A) (setoid B)
-    leftInverse car = record
-                    { to           = →-to-⟶ into
-                    ; from         = →-to-⟶ from
-                    ; left-inverse = proj₂ bij
-                    } where
-      open SameCardinality car
-
+    open WithWitness public
 open Args public
