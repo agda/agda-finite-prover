@@ -5,6 +5,8 @@ open import Data.Fin
 open import Data.Fin.Auto
 open import Data.Fin.Cardinality
 open import Data.Vec
+open import Data.Vec.L-ary
+open import Data.Vec.Pi-ary
 open import Data.Matrix hiding (lookup)
 open import Data.Matrix.Auto
 open import Data.Product
