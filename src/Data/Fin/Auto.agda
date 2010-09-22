@@ -7,7 +7,7 @@ open import Data.Fin
 open import Data.List hiding (map)
 open import Data.Vec hiding (replicate)
 open import Data.Vec.Theorems
-open import Data.Vec.N-ary
+open import Data.Vec.Pi-ary
 open import Data.Matrix hiding (map)
 open import Data.Matrix.Auto
 open import Data.Matrix.Cardinality
@@ -76,5 +76,11 @@ private
     ≡⟨ (Q ′′) xs ⟩
       Q $ⁿ xs
     ∎
+  
+  auto : toMatrix P′ ≡ toMatrix Q′
+       → Π-ary k A λ xs
+       → P $ⁿ xs
+       ≡ Q $ⁿ xs
+  auto eqs = πcurryⁿ (vec-auto eqs)
 
 open Args public
