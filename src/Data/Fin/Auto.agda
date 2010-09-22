@@ -20,6 +20,12 @@ open import Relation.Binary.PropositionalEquality
 open ≡-Reasoning
 
 
+infix 0 _≈_
+_≈_ : ∀ {ℓ} {A : Set ℓ}
+    → A → A
+    → A × A
+_≈_ = _,_
+
 private
  module Args {ℓ} {A : Set ℓ} {B : Set ℓ}
              (finite : Finite A)
