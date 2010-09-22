@@ -24,9 +24,15 @@ private
  module Args {ℓ} {A : Set ℓ} {B : Set ℓ}
              (finite : Finite A)
              (k : ℕ)
-             (P Q : N-ary k A B)
+             (P,Q : N-ary k A (B × B))
         where
   private
+    P : Vec A k → B
+    P xs = proj₁ (P,Q $ⁿ xs)
+    
+    Q : Vec A k → B
+    Q xs = proj₂ (P,Q $ⁿ xs)
+    
     n = proj₁ finite
     ns = replicate k n
     open SameCardinality (proj₂ finite)
@@ -40,49 +46,45 @@ private
                   ; bij to fins↔vec
                   )
     
-    _′ : N-ary k A B → Fins ns → B
-    _′ f js = f $ⁿ map fin→A (fins→vec js)
+    _′ : (Vec A k → B) → Fins ns → B
+    _′ f js = f (map fin→A (fins→vec js))
     
     P′ = P ′
     Q′ = Q ′
     
-    _′′ : (f : N-ary k A B)
+    _′′ : (f : Vec A k → B)
         → (xs : Vec A k)
         → (f ′) (vec→fins (map A→fin xs))
-        ≡ f $ⁿ xs
+        ≡ f xs
     _′′ f xs =
       begin
-        f $ⁿ map fin→A (fins→vec (vec→fins (map A→fin xs)))
-      ≡⟨ cong (λ – → f $ⁿ map fin→A –)
+        f (map fin→A (fins→vec (vec→fins (map A→fin xs))))
+      ≡⟨ cong (λ – → f (map fin→A –))
               (proj₁ fins↔vec _) ⟩
-        f $ⁿ map fin→A (map A→fin xs)
-      ≡⟨ cong (λ – → f $ⁿ –)
-              (map-∘ fin→A A→fin xs) ⟩
-        f $ⁿ map (fin→A ∘ A→fin) xs
-      ≡⟨ cong (λ – → f $ⁿ –)
-              (map-id (proj₂ A↔fin) xs) ⟩
-        f $ⁿ xs
+        f (map fin→A (map A→fin xs))
+      ≡⟨ cong f (map-∘ fin→A A→fin xs) ⟩
+        f (map (fin→A ∘ A→fin) xs)
+      ≡⟨ cong f (map-id (proj₂ A↔fin) xs) ⟩
+        f xs
       ∎
   
   vec-auto : toMatrix P′ ≡ toMatrix Q′
            → (xs : Vec A k)
-           → P $ⁿ xs
-           ≡ Q $ⁿ xs
+           → P xs ≡ Q xs
   vec-auto eqs xs =
     begin
-      P $ⁿ xs
+      P xs
     ≡⟨ sym ((P ′′) xs) ⟩
       P′ (vec→fins (map A→fin xs))
     ≡⟨ matrix-zip-eq P′ Q′ eqs _ ⟩
       Q′ (vec→fins (map A→fin xs))
     ≡⟨ (Q ′′) xs ⟩
-      Q $ⁿ xs
+      Q xs
     ∎
   
   auto : toMatrix P′ ≡ toMatrix Q′
        → Π-ary k A λ xs
-       → P $ⁿ xs
-       ≡ Q $ⁿ xs
+       → P xs ≡ Q xs
   auto eqs = πcurryⁿ (vec-auto eqs)
 
 open Args public
