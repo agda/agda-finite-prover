@@ -42,13 +42,13 @@ private
   f $ⁿ (x₁ ∷ [])      = f x₁
   f $ⁿ (x₁ ∷ x₂ ∷ xs) = f x₁ $ⁿ (x₂ ∷ xs)
   
-  πcurryⁿ : ∀ {n A B} → (Vec A n → B) → N-ary n A B
+  πcurryⁿ : ∀ {n A B} → ((xs : Vec A n) → B xs) → Π-ary n A B
   πcurryⁿ {zero}        f = f []
-  πcurryⁿ {suc zero}    f = λ x → curryⁿ (λ xs → f (x ∷ xs))
-  πcurryⁿ {suc (suc n)} f = λ x → curryⁿ (λ xs → f (x ∷ xs))
+  πcurryⁿ {suc zero}    f = λ x → πcurryⁿ (λ xs → f (x ∷ xs))
+  πcurryⁿ {suc (suc n)} f = λ x → πcurryⁿ (λ xs → f (x ∷ xs))
   
-  _π$ⁿ_ : ∀ {n A B} → N-ary n A B → (Vec A n → B)
+  _π$ⁿ_ : ∀ {n A B} → Π-ary n A B → ((xs : Vec A n) → B xs)
   f π$ⁿ []             = f
   f π$ⁿ (x₁ ∷ [])      = f x₁
-  f π$ⁿ (x₁ ∷ x₂ ∷ xs) = f x₁ $ⁿ (x₂ ∷ xs)
+  f π$ⁿ (x₁ ∷ x₂ ∷ xs) = f x₁ π$ⁿ (x₂ ∷ xs)
 open Levels public
