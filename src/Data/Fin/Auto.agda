@@ -3,6 +3,7 @@
 module Data.Fin.Auto where
 
 open import Level
+open import Data.Nat
 open import Data.Fin
 open import Data.List hiding (map)
 open import Data.Vec hiding (replicate)
