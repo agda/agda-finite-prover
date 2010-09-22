@@ -22,7 +22,8 @@ open ≡-Reasoning
 private
  module Args {ℓ} {A : Set ℓ} {B : Set ℓ}
              (finite : Finite A)
-             {k} (P Q : N-ary k A B)
+             (k : ℕ)
+             (P Q : N-ary k A B)
         where
   private
     n = proj₁ finite
