@@ -54,6 +54,5 @@ finitePauli = finite xs w refl where
 ⋅-inverse = auto finitePauli 1 (λ x → x ⋅ x ≈ I) refl
           , auto finitePauli 1 (λ x → x ⋅ x ≈ I) refl
 
--- causes a "memory allocation failed (requested 2097152 bytes)" error
 ⋅-associative : Associative _⋅_
 ⋅-associative = auto finitePauli 3 (λ x y z → (x ⋅ y) ⋅ z ≈ x ⋅ (y ⋅ z)) refl
