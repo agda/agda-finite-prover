@@ -1,0 +1,10 @@
+--------------------------------------------------------------------------
+-- finite-prover                                                        --
+--                                                                      --
+-- a library for proving propositions quantified over finite sets       --
+--------------------------------------------------------------------------
+
+Look at examples/Main.agda for an example of using the library.
+
+This code was made for Agda 2.2.6
+using Agda's standard library version 0.3
