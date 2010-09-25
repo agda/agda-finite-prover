@@ -27,7 +27,7 @@ _≈_ : ∀ {ℓ} {A : Set ℓ}
 _≈_ = _,_
 
 private
- module Args {ℓ} {A : Set ℓ} {B : Set ℓ}
+ module Args {a b} {A : Set a} {B : Set b}
              (finite : Finite A)
              (k : ℕ)
              (P,Q : N-ary k A (B × B))
