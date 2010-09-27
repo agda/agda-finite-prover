@@ -5,7 +5,6 @@ module Relation.Binary.Cardinality where
 open import Level
 open import Data.Fin
 open import Data.Product
-open import Data.Function.LeftInverse
 open import Relation.Binary.PropositionalEquality
 
 
@@ -27,14 +26,3 @@ record SameCardinality {a b} (A : Set a) (B : Set b)
 
 Finite : ∀ {ℓ} → Set ℓ → Set ℓ
 Finite A = ∃ λ n → SameCardinality A (Fin n)
-
-
-leftInverse : ∀ {a b} {A : Set a} {B : Set b}
-            → SameCardinality A B
-            → LeftInverse (setoid A) (setoid B)
-leftInverse car = record
-                { to           = →-to-⟶ into
-                ; from         = →-to-⟶ from
-                ; left-inverse = proj₂ bij
-                } where
-  open SameCardinality car
