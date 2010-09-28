@@ -13,7 +13,7 @@ open import Data.Matrix hiding (map)
 open import Data.Matrix.Auto
 open import Data.Matrix.Cardinality
 open import Data.Product hiding (map)
-open import Data.Function
+open import Function
 open import Relation.Binary.Cardinality
 open import Relation.Binary.PropositionalEquality
 
