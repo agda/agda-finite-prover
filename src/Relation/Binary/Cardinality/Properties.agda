@@ -4,8 +4,8 @@ module Relation.Binary.Cardinality.Properties where
 
 open import Level
 open import Data.Product
-open import Data.Function
-open import Data.Function.LeftInverse hiding (id ; _∘_)
+open import Function
+open import Function.LeftInverse hiding (id ; _∘_)
 open import Relation.Binary.Cardinality
 open import Relation.Binary.PropositionalEquality renaming ( sym to ≡-sym
                                                            ; trans to ≡-trans
@@ -35,9 +35,9 @@ private
   
   leftInverse : LeftInverse (setoid A) (setoid B)
   leftInverse = record
-              { to           = →-to-⟶ A→B
-              ; from         = →-to-⟶ A←B
-              ; left-inverse = proj₂ A↔B
+              { to              = →-to-⟶ A→B
+              ; from            = →-to-⟶ A←B
+              ; left-inverse-of = proj₂ A↔B
               }
   
   sym : SameCardinality B A
