@@ -6,5 +6,5 @@
 
 Look at examples/Main.agda for an example of using the library.
 
-This code was made for Agda 2.2.8
-using Agda's standard library version 0.4
+This code was made for Agda 2.3.0
+using Agda's standard library version 0.6
