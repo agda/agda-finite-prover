@@ -1,5 +1,3 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 -- a drop-in replacement for N-ary which supports
 --   (A : Set a) (B : Set b) instead of
 --   (A : Set ℓ) (B : Set ℓ).
@@ -7,7 +5,7 @@
 --   second type parameter is a dependent type.
 module Data.Vec.Pi-ary where
 
-open import Level
+open import Level using (Level; _⊔_)
 open import Data.Nat hiding (_⊔_)
 open import Data.Vec
 

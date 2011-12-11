@@ -1,8 +1,5 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Relation.Binary.Cardinality.Properties where
 
-open import Level
 open import Data.Product
 open import Function
 open import Function.LeftInverse hiding (id ; _∘_)

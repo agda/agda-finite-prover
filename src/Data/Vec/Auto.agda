@@ -1,11 +1,9 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Data.Vec.Auto where
 
-open import Level
 open import Data.Nat
 open import Data.Fin
 open import Data.Vec
+open import Data.Vec.Properties
 open import Data.Vec.Theorems
 open import Relation.Binary.PropositionalEquality
 

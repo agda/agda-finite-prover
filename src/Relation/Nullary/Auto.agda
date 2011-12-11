@@ -1,8 +1,5 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Relation.Nullary.Auto where
 
-open import Level
 open import Data.Empty
 open import Data.Unit
 open import Relation.Nullary

@@ -1,8 +1,5 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Data.Matrix where
 
-open import Level
 open import Data.Nat
 open import Data.Fin
 open import Data.List hiding (map)

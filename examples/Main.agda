@@ -10,9 +10,8 @@ open import Data.Product
 open import Relation.Binary.Cardinality
 open import Relation.Binary.Cardinality.Properties
 open import Relation.Binary.PropositionalEquality
-import Algebra.FunctionProperties as F
 
-open F _≡_
+import Algebra.FunctionProperties as F
 
 
 data Pauli : Set where
@@ -20,6 +19,9 @@ data Pauli : Set where
   X : Pauli
   Y : Pauli
   Z : Pauli
+
+open F {A = Pauli} _≡_
+
 
 _⋅_ : Pauli → Pauli → Pauli
 X ⋅ X = I

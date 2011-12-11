@@ -1,5 +1,3 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Relation.Binary.Cardinality where
 
 open import Level

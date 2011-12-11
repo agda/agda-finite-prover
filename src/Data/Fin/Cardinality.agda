@@ -1,5 +1,3 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Data.Fin.Cardinality where
 
 open import Level

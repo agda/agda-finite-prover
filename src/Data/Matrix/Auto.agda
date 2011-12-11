@@ -1,12 +1,10 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Data.Matrix.Auto where
 
-open import Level
 open import Data.Nat
 open import Data.Fin
 open import Data.List hiding (map)
 open import Data.Vec renaming (lookup to vec-lookup; map to vec-map)
+open import Data.Vec.Properties
 open import Data.Vec.Theorems renaming (lookup-free to vec-lookup-free)
 open import Data.Matrix
 open import Relation.Binary.PropositionalEquality

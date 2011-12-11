@@ -1,12 +1,10 @@
-{-# OPTIONS --universe-polymorphism #-}
-
 module Data.Fin.Auto where
 
-open import Level
 open import Data.Nat
 open import Data.Fin
 open import Data.List hiding (map)
 open import Data.Vec hiding (replicate)
+open import Data.Vec.Properties
 open import Data.Vec.Theorems
 open import Data.Vec.Pi-ary
 open import Data.Matrix hiding (map)
@@ -46,7 +44,7 @@ private
                   ; from to fin→A
                   ; bij to A↔fin
                   )
-    open SameCardinality fins-cardinality
+    open SameCardinality (fins-cardinality {n} {k})
          renaming ( into to fins→vec
                   ; from to vec→fins
                   ; bij to fins↔vec
@@ -68,9 +66,9 @@ private
       ≡⟨ cong (λ – → f (map fin→A –))
               (proj₁ fins↔vec _) ⟩
         f (map fin→A (map A→fin xs))
-      ≡⟨ cong f (map-∘ fin→A A→fin xs) ⟩
+      ≡⟨ cong f $ sym $ map-∘ fin→A A→fin _ ⟩
         f (map (fin→A ∘ A→fin) xs)
-      ≡⟨ cong f (map-id (proj₂ A↔fin) xs) ⟩
+      ≡⟨ cong f $ map-ext-id (proj₂ A↔fin) _ ⟩
         f xs
       ∎
   
