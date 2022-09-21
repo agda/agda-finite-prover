@@ -1,8 +1,8 @@
 module Relation.Binary.Cardinality.Properties where
 
 open import Data.Product
-open import Function
-open import Function.LeftInverse hiding (id ; _∘_)
+open import Function hiding (LeftInverse)
+open import Function.LeftInverse hiding (id ; _∘_; leftInverse)
 open import Relation.Binary.Cardinality
 open import Relation.Binary.PropositionalEquality renaming ( sym to ≡-sym
                                                            ; trans to ≡-trans

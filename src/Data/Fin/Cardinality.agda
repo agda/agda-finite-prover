@@ -16,7 +16,7 @@ private
                  → Set ℓ
    FiniteWitness xs = ∀ x
                     → ∃ λ i
-                    → vec-lookup i xs ≡ x
+                    → vec-lookup xs i ≡ x
 
    module WithWitness {n} (xs : Vec A n)
                       (w : FiniteWitness xs)
@@ -26,7 +26,7 @@ private
        into x = proj₁ (w x)
        
        from : Fin n → A
-       from i = vec-lookup i xs
+       from i = vec-lookup xs i
        
        P : Fin n → Fin n
        P i = into (from i)
@@ -51,7 +51,7 @@ private
                           ; from = from
                           ; bij = to-from , lookupWitness
                           } where
-       to-from : ∀ i → into (vec-lookup i xs) ≡ i
+       to-from : ∀ i → into (vec-lookup xs i) ≡ i
        to-from = zip-eq P Q eq
      
      finite : Cancels₁

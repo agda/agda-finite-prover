@@ -8,5 +8,4 @@ Look at examples/Main.agda for an example of using the library.
 
 This code was tested with:
 
-* Agda 2.3.0, standard library version 0.6
-* Agda 2.3.2, standard library version 0.7
+* Agda 2.6.1, standard library version 1.4

@@ -2,7 +2,7 @@ module Data.Matrix where
 
 open import Data.Nat
 open import Data.Fin
-open import Data.List hiding (map)
+open import Data.List hiding (lookup; map)
 open import Data.Vec renaming (lookup to vec-lookup; map to vec-map)
 
 
@@ -19,11 +19,11 @@ data Fins : List ℕ → Set where
 
 
 lookup : ∀ {ns ℓ} {A : Set ℓ}
-       → Fins ns
        → Matrix A ns
+       → Fins ns
        → A
-lookup []       x  = x
-lookup (j ∷ js) xs = lookup js (vec-lookup j xs)
+lookup x  []       = x
+lookup xs (j ∷ js) = lookup (vec-lookup xs j) js
 
 map : ∀ {ns a b} {A : Set a} {B : Set b}
     → (A → B)

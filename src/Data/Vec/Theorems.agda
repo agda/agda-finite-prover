@@ -12,11 +12,11 @@ open ≡-Reasoning
 
 
 lookup-free : ∀ {a b} {A : Set a} {B : Set b} (f : A → B)
-            → ∀ {n} i {xs : Vec A n}
-            → lookup i (map f xs)
-            ≡ f (lookup i xs)
-lookup-free f zero    {x ∷ xs} = refl
-lookup-free f (suc i) {x ∷ xs} = lookup-free f i {xs}
+            → ∀ {n} i (xs : Vec A n)
+            → lookup (map f xs) i
+            ≡ f (lookup xs i)
+lookup-free f zero    (x ∷ xs) = refl
+lookup-free f (suc i) (x ∷ xs) = lookup-free f i xs
 
 -- a version of map-id supporting functions which are
 -- merely extensionaly equivalent to id.

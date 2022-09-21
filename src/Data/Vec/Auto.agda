@@ -20,12 +20,12 @@ private
   
   lookup-toVec : (f : Fin n → A)
                → (x : Fin n)
-               → lookup x (toVec f) ≡ f x
+               → lookup (toVec f) x ≡ f x
   lookup-toVec f x =
     begin
-      lookup x (map f (allFin n))
-    ≡⟨ lookup-free f x ⟩
-      f (lookup x (allFin n))
+      lookup (map f (allFin n)) x
+    ≡⟨ lookup-free f x (allFin n) ⟩
+      f (lookup (allFin n) x)
     ≡⟨ cong f (lookup-allFin x) ⟩
       f x
     ∎
@@ -38,9 +38,9 @@ private
     begin
       P x
     ≡⟨ sym (lookup-toVec P x) ⟩
-      lookup x (toVec P)
-    ≡⟨ cong (lookup x) eq ⟩
-      lookup x (toVec Q)
+      lookup (toVec P) x
+    ≡⟨ cong (λ xs → lookup xs x) eq ⟩
+      lookup (toVec Q) x
     ≡⟨ lookup-toVec Q x ⟩
       Q x
     ∎

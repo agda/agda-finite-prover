@@ -11,7 +11,7 @@ open import Relation.Binary.Cardinality
 open import Relation.Binary.Cardinality.Properties
 open import Relation.Binary.PropositionalEquality
 
-import Algebra.FunctionProperties as F
+import Algebra.Definitions as Alg
 
 
 data Pauli : Set where
@@ -20,7 +20,7 @@ data Pauli : Set where
   Y : Pauli
   Z : Pauli
 
-open F {A = Pauli} _≡_
+open Alg {A = Pauli} _≡_
 
 
 _⋅_ : Pauli → Pauli → Pauli
